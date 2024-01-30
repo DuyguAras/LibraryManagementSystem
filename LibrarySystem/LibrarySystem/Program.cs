@@ -179,7 +179,9 @@ namespace LibraryManagementSystem
                 }
             } while (true);
 
-            return 0;
+            Choices();
+
+            return 0;   
         }
 
         public static void BorrowBook(List<Book> borrowInfo)
@@ -206,9 +208,7 @@ namespace LibraryManagementSystem
                     
                     isBorrowed = true;
                     break;
-                }
-
-                
+                } 
             }
 
             if (!isBorrowed)
@@ -217,6 +217,8 @@ namespace LibraryManagementSystem
                 BorrowBook(books);
                 
             }
+
+            Choices();
         }
 
         public static void ReturnBook(List<Book> returnedInfo)
@@ -242,6 +244,8 @@ namespace LibraryManagementSystem
                 Console.WriteLine("The entered title is not available in the library.\n");
                 ReturnBook(books); 
             }
+
+            Choices();
         }
 
         public static void SearchBook(List<Book> searchedInfo)
@@ -271,6 +275,8 @@ namespace LibraryManagementSystem
                 Console.WriteLine("The entered data is not available in the library.\n");
                 SearchBook(books);
             }
+
+            Choices();
         }
 
         public static void ViewAllBooks(List<Book> bookInfo)
@@ -285,6 +291,8 @@ namespace LibraryManagementSystem
                 Console.WriteLine($"Copy number: {book.copy} ");
                 Console.WriteLine($"Is it borrowed?: {book.borrowed} \n");
             }
+
+            Choices();
         }
 
         public class Book
