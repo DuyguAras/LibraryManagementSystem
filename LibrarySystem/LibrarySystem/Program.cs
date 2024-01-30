@@ -194,7 +194,7 @@ namespace LibraryManagementSystem
             {
                 if (book.title == borrowed)
                 {
-                    isBorrowed = true;
+                    
                     if (book.borrowed)
                     {
                         Console.WriteLine("The entered book is already borrowed.\n");
@@ -203,16 +203,20 @@ namespace LibraryManagementSystem
                     {
                         Console.WriteLine("You borrowed " + book.title + ".");
                     }
+                    
+                    isBorrowed = true;
                     break;
                 }
 
-                if (!isBorrowed)
-                {
-                    Console.WriteLine("The entered book is not available.\n");
-                    BorrowBook(books);
-                    break;
-                }
-            }  
+                
+            }
+
+            if (!isBorrowed)
+            {
+                Console.WriteLine("The entered book is not available.\n");
+                BorrowBook(books);
+                
+            }
         }
 
         public static void ReturnBook(List<Book> returnedInfo)
