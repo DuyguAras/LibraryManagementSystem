@@ -242,7 +242,7 @@ namespace LibraryManagementSystem
 
         public static void SearchBook(List<Book> searchedInfo)
         {
-            Console.Write("Please enter the title or the author of the book you want to search for: ");
+            Console.Write("Please enter the title or the author or the ISBN of the book you want to search for: ");
 
             string searched = Console.ReadLine();
      
