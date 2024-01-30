@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 
 namespace LibraryManagementSystem
 {
-    class Program
+    class LibrarySystem
     {
-        private static int bookNumber;
+        private static List<Book> books = new List<Book>();
 
-        static List<string> bookTitles = new List<string>();
-
-        static List<string> bookAuthors = new List<string>();
         static void Main()
         {
-
             //1- kitap ekle isim ve yazar+numara ve kopya-
             //2- kitap odunc al+
             //3- kitap iade et+
@@ -31,94 +26,180 @@ namespace LibraryManagementSystem
             Console.WriteLine("'6' to view overdue books.");
             Console.WriteLine("To go back to the beginning, press the 'q' key.\n");
 
+            books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, false, false));
+
             Choices();
 
             Console.ReadLine();
         }
+
         public static void Choices()
         {
             Console.Write("What would you like to do?: ");
             string choice = Console.ReadLine();
 
-            switch (int.Parse(choice))
+            if (int.TryParse(choice, out int choiceNumber))
             {
-                case 1:
-                    BookTitle(bookTitles);
-                    BookAuthor(bookAuthors);
-                    break;
-                case 2:
-                    BorrowBook(bookTitles);
-                    break;
-                case 3:
-                    ReturnBook(bookTitles);
-                    break;
-                case 4:
-                    SearchBook(bookTitles, bookAuthors);
-                    break;
-                case 5:
-                    ViewAllBooks(bookTitles);
-                    break;
-
+                switch (choiceNumber)
+                {
+                    case 1:
+                        CreateNewBook();
+                        break;
+                    case 2:
+                        BorrowBook(books);
+                        break;
+                    case 3:
+                        //ReturnBook(bookTitles);
+                        break;
+                    case 4:
+                        //SearchBook(bookTitles, bookAuthors);
+                        break;
+                    case 5:
+                        ViewAllBooks(books);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please enter a valid number.\n");
+                        Choices();
+                        break;
+                }
             }
-
-
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a number.\n");
+                Choices();
+            }
         }
 
-        public static void BookTitle(List<string> titleList)
+        private static void CreateNewBook()
+        {
+            string title = BookTitle();
+            string author = BookAuthor();
+            string ISBN = BookISBN();
+            int copy = BookCopy();
+
+            Book newBook = new Book(title, author, ISBN, copy, false, false);
+            books.Add(newBook);
+
+            Choices();
+        }
+
+        public static string BookTitle()
         {
             Console.Write("Please enter the book title: ");
 
+            string title = Console.ReadLine();
+
             do
             {
-                string bookTitle = Console.ReadLine();
-                bookNumber++;
-
-                if (bookTitle.Length < 2 || bookTitle.Length > 30)
+                if (title.Length < 2 || title.Length > 30)
                 {
                     Console.WriteLine("The entered title is invalid.\n");
-                    Console.Write("Please enter the book title again: ");
+                    BookTitle();
+                    break;
                 }
                 else
                 {
-                    titleList.Add(bookTitle);
-                    Console.WriteLine($"{bookTitle} has been added to the library.\n");
-                    break;
+
+                    Console.WriteLine(title + " has been added to the library.\n");
+                    return title;
                 }
             } while (true);
 
-
+            return null;
         }
 
-        public static void BookAuthor(List<string> authorList)
+        public static string BookAuthor()
         {
             Console.Write("Please enter the author's name: ");
 
+            string author = Console.ReadLine();
+
             do
             {
-                string bookAuthor = Console.ReadLine();
-
-                if (bookAuthor.Length < 2 || bookAuthor.Length > 50)
+                if (author.Length < 2 || author.Length > 50)
                 {
                     Console.WriteLine("The entered name is invalid.\n");
-                    Console.Write("Please enter the author name again: ");
+                    BookAuthor();
+                    break;
                 }
                 else
                 {
-                    authorList.Add(bookAuthor);
-                    Console.WriteLine($"{bookAuthor} has been added to the library.\n");
-                    Choices();
+                    Console.WriteLine(author + " has been added to the library.\n");
+                    return author;
                 }
             } while (true);
+
+            return null;
         }
 
-        public static void BorrowBook(List<string> titleList)
+        public static string BookISBN()
+        {
+            Console.Write("Please enter the ISBN: ");
+
+            string ISBN = Console.ReadLine();
+
+            do
+            {
+                if (ISBN.Length != 2)
+                {
+                    Console.WriteLine("The entered ISBN is invalid.\n");
+                    BookISBN();
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine(ISBN + " has been added to the library.\n");
+                    return ISBN;
+                }
+            } while (true);
+
+            return null;
+        }
+
+        public static int BookCopy()
+        {
+            Console.Write("Please enter the copy number: ");
+
+            int copy = int.Parse(Console.ReadLine());
+
+            do
+            {
+                if (copy <= 0)
+                {
+                    Console.WriteLine("The entered copy number is invalid.\n");
+                    BookCopy();
+                    //Console.Write("Please enter the copy number again: ");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine(copy + " has been added to the library.\n");
+                    return copy;
+                }
+            } while (true);
+
+            return 0;
+        }
+
+        public static void BorrowBook(List<Book> borrowInfo)
         {
             Console.Write("Please enter the title of the book you want to borrow: ");
 
-            string bookTitle = Console.ReadLine();
-            Console.WriteLine($"You borrowed {bookTitle}!");
+            string borrowed = Console.ReadLine();
 
-            titleList.Remove(bookTitle);
+            foreach (Book book in borrowInfo)
+            {
+                if (book.borrowed)
+                {
+                    Console.WriteLine("The entered book is not available.\n");
+                }
+                else
+                {
+                    Console.WriteLine("You borrowed " + book.title);
+                }
+            }
+             
+            
         }
 
         public static void ReturnBook(List<string> titleList)
@@ -163,9 +244,39 @@ namespace LibraryManagementSystem
             }
         }
 
-        public static void ViewAllBooks(List<string> titleList)
+        public static void ViewAllBooks(List<Book> bookInfos)
         {
-            Console.WriteLine("The number of books in the library is " + bookNumber);
+            Console.WriteLine($"The number of books in the library is {bookInfos.Count} \n");
+
+            foreach (var book in bookInfos)
+            {
+                Console.WriteLine($"Title: {book.title} ");
+                Console.WriteLine($"Author: {book.author} ");
+                Console.WriteLine($"ISBN: {book.ISBN} ");
+                Console.WriteLine($"Copy number: {book.copy} ");
+                Console.WriteLine($"Is it borrowed?: {book.borrowed} \n");
+            }
+        }
+
+        public class Book
+        {
+            public string title;
+            public string author;
+            public string ISBN;
+            public int copy;
+            public bool borrowed;
+            public bool returned;
+
+            public Book(string title, string author, string ISBN, int copy, bool borrowed, bool returned)
+            {
+                this.title = title;
+                this.author = author;
+                this.ISBN = ISBN;
+                this.copy = copy;
+                this.borrowed = borrowed;
+                this.returned = returned;
+            }
         }
     }
 }
+

@@ -1,0 +1,7 @@
+D:\Unity\LibraryManagementSystem\LibrarySystem\LibrarySystem\bin\Debug\LibrarySystem.exe.config
+D:\Unity\LibraryManagementSystem\LibrarySystem\LibrarySystem\bin\Debug\LibrarySystem.exe
+D:\Unity\LibraryManagementSystem\LibrarySystem\LibrarySystem\bin\Debug\LibrarySystem.pdb
+D:\Unity\LibraryManagementSystem\LibrarySystem\LibrarySystem\obj\Debug\LibrarySystem.csproj.AssemblyReference.cache
+D:\Unity\LibraryManagementSystem\LibrarySystem\LibrarySystem\obj\Debug\LibrarySystem.csproj.CoreCompileInputs.cache
+D:\Unity\LibraryManagementSystem\LibrarySystem\LibrarySystem\obj\Debug\LibrarySystem.exe
+D:\Unity\LibraryManagementSystem\LibrarySystem\LibrarySystem\obj\Debug\LibrarySystem.pdb
