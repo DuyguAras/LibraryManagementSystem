@@ -27,6 +27,7 @@ namespace LibraryManagementSystem
             Console.WriteLine("To go back to the beginning, press the 'q' key.\n");
 
             books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, false, false));
+            books.Add(new Book("Delifisek", "Franz Kafka", "978-605-2169-29-2", 1111, true, false));
 
             Choices();
 
@@ -49,7 +50,7 @@ namespace LibraryManagementSystem
                         BorrowBook(books);
                         break;
                     case 3:
-                        //ReturnBook(bookTitles);
+                        ReturnBook(books);
                         break;
                     case 4:
                         //SearchBook(bookTitles, bookAuthors);
@@ -140,7 +141,7 @@ namespace LibraryManagementSystem
 
             do
             {
-                if (ISBN.Length != 2)
+                if (ISBN.Length != 17)
                 {
                     Console.WriteLine("The entered ISBN is invalid.\n");
                     BookISBN();
@@ -187,29 +188,60 @@ namespace LibraryManagementSystem
 
             string borrowed = Console.ReadLine();
 
+            bool isBorrowed = false;
+
             foreach (Book book in borrowInfo)
             {
-                if (book.borrowed)
+                if (book.title == borrowed)
+                {
+                    isBorrowed = true;
+                    if (book.borrowed)
+                    {
+                        Console.WriteLine("The entered book is already borrowed.\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You borrowed " + book.title + ".");
+                    }
+                    break;
+                }
+
+                if (!isBorrowed)
                 {
                     Console.WriteLine("The entered book is not available.\n");
-                }
-                else
-                {
-                    Console.WriteLine("You borrowed " + book.title);
+                    BorrowBook(books);
+                    break;
                 }
             }
              
             
         }
 
-        public static void ReturnBook(List<string> titleList)
+        public static void ReturnBook(List<Book> returnedInfo)
         {
             Console.Write("Please enter the title of the book you want to return: ");
 
-            string bookTitle = Console.ReadLine();
-            Console.WriteLine($"You returned {bookTitle}!");
+            string returned = Console.ReadLine();
 
-            titleList.Add(bookTitle);
+            bool isReturned = false;
+
+            foreach (Book book in returnedInfo)
+            {
+                if (book.title == returned)
+                {
+                    isReturned = true;
+                    Console.WriteLine("You returned " + book.title);
+                    break;
+                } 
+            }
+
+            if (!isReturned)
+            {
+                Console.WriteLine("The entered title is not available in the library.\n");
+                ReturnBook(books);
+                
+            }
+
         }
 
         public static void SearchBook(List<string> titleList, List<string> authorList)
