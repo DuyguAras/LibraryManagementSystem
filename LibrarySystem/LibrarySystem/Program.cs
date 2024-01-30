@@ -26,8 +26,8 @@ namespace LibraryManagementSystem
             Console.WriteLine("'6' to view overdue books.");
             Console.WriteLine("To go back to the beginning, press the 'q' key.\n");
 
-            books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, false, false));
-            books.Add(new Book("Delifisek", "Franz Kafka", "978-605-2169-29-2", 1111, true, false));
+            books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, false, false, false));
+            books.Add(new Book("Delifisek", "Vasconcelos", "978-605-2169-29-2", 2222, true, false, false));
 
             Choices();
 
@@ -53,7 +53,7 @@ namespace LibraryManagementSystem
                         ReturnBook(books);
                         break;
                     case 4:
-                        //SearchBook(bookTitles, bookAuthors);
+                        SearchBook(books);
                         break;
                     case 5:
                         ViewAllBooks(books);
@@ -78,7 +78,7 @@ namespace LibraryManagementSystem
             string ISBN = BookISBN();
             int copy = BookCopy();
 
-            Book newBook = new Book(title, author, ISBN, copy, false, false);
+            Book newBook = new Book(title, author, ISBN, copy, false, false, false);
             books.Add(newBook);
 
             Choices();
@@ -212,9 +212,7 @@ namespace LibraryManagementSystem
                     BorrowBook(books);
                     break;
                 }
-            }
-             
-            
+            }  
         }
 
         public static void ReturnBook(List<Book> returnedInfo)
@@ -238,49 +236,44 @@ namespace LibraryManagementSystem
             if (!isReturned)
             {
                 Console.WriteLine("The entered title is not available in the library.\n");
-                ReturnBook(books);
-                
+                ReturnBook(books); 
             }
-
         }
 
-        public static void SearchBook(List<string> titleList, List<string> authorList)
+        public static void SearchBook(List<Book> searchedInfo)
         {
             Console.Write("Please enter the title or the author of the book you want to search for: ");
 
-            string bookTitle = Console.ReadLine();
-            string bookAuthor = Console.ReadLine();
+            string searched = Console.ReadLine();
+     
+            bool isSearched = false;
 
-            foreach (var title in titleList)
+            foreach (Book book in searchedInfo)
             {
-                if (bookTitle == title)
+                if (book.title == searched  || book.author == searched || book.ISBN == searched)
                 {
-                    Console.WriteLine($"The book {bookTitle} is available in the library.");
-                }
-                else
-                {
-                    Console.WriteLine($"The book {bookTitle} could not be found in the library.");
+                    isSearched = true;
+
+                    Console.WriteLine($"Title: {book.title} ");
+                    Console.WriteLine($"Author: {book.author} ");
+                    Console.WriteLine($"ISBN: {book.ISBN} ");
+                    Console.WriteLine($"Copy number: {book.copy} ");
+                    Console.WriteLine($"Is it borrowed?: {book.borrowed} \n");
                 }
             }
 
-            foreach (var author in authorList)
+            if (!isSearched)
             {
-                if (bookAuthor == author)
-                {
-                    Console.WriteLine($"The author {bookAuthor} is available in the library.");
-                }
-                else
-                {
-                    Console.WriteLine($"The author {bookAuthor} could not be found in the library.");
-                }
+                Console.WriteLine("The entered data is not available in the library.\n");
+                SearchBook(books);
             }
         }
 
-        public static void ViewAllBooks(List<Book> bookInfos)
+        public static void ViewAllBooks(List<Book> bookInfo)
         {
-            Console.WriteLine($"The number of books in the library is {bookInfos.Count} \n");
+            Console.WriteLine($"The number of books in the library is {bookInfo.Count} \n");
 
-            foreach (var book in bookInfos)
+            foreach (var book in bookInfo)
             {
                 Console.WriteLine($"Title: {book.title} ");
                 Console.WriteLine($"Author: {book.author} ");
@@ -298,8 +291,9 @@ namespace LibraryManagementSystem
             public int copy;
             public bool borrowed;
             public bool returned;
+            public bool searched;
 
-            public Book(string title, string author, string ISBN, int copy, bool borrowed, bool returned)
+            public Book(string title, string author, string ISBN, int copy, bool borrowed, bool returned, bool searched)
             {
                 this.title = title;
                 this.author = author;
@@ -307,6 +301,7 @@ namespace LibraryManagementSystem
                 this.copy = copy;
                 this.borrowed = borrowed;
                 this.returned = returned;
+                this.searched = searched;
             }
         }
     }
