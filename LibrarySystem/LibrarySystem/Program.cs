@@ -16,10 +16,9 @@ namespace LibraryManagementSystem
             Console.WriteLine("'4' to search for a book by title or author.");
             Console.WriteLine("'5' to view all books.");
             Console.WriteLine("'6' to view overdue books.");
-            Console.WriteLine("To undo the operation, press the 'b' key.");
             Console.WriteLine("To go back to the beginning, press the 'q' key.\n");
 
-            books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, 0,  false, false, false));
+            books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, 0, false, false, false));
             books.Add(new Book("Delifisek", "Vasconcelos", "978-605-2169-29-2", 2222, 18, true, false, false));
 
             Choices();
@@ -60,11 +59,11 @@ namespace LibraryManagementSystem
                         break;
                     case 6:
                         ViewOverdueBooks();
-                    break;
+                        break;
                     default:
                         Console.WriteLine("Invalid choice. Please enter a valid number.\n");
                         Choices();
-                    break;
+                        break;
                 }
             }
             else
@@ -184,7 +183,7 @@ namespace LibraryManagementSystem
 
             Choices();
 
-            return 0;   
+            return 0;
         }
 
         public static void BorrowBook(List<Book> borrowInfo)
@@ -201,13 +200,13 @@ namespace LibraryManagementSystem
                 {
                     if (book.borrowed)
                         Console.WriteLine("The entered book is already borrowed.\n");
-                    
+
                     else
                         Console.WriteLine("You borrowed " + book.title + ".");
-                    
+
                     isBorrowed = true;
                     break;
-                } 
+                }
             }
 
             if (!isBorrowed)
@@ -224,23 +223,31 @@ namespace LibraryManagementSystem
             Console.Write("Please enter the title of the book you want to return: ");
 
             string returned = Console.ReadLine();
-
             bool isReturned = false;
 
             foreach (Book book in returnedInfo)
             {
                 if (book.title == returned)
                 {
+                    if (book.borrowed)
+                    {
+                        book.returned = true;
+                        book.borrowed = false;
+                        Console.WriteLine("You returned " + book.title + ".\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("You cannot return a book that has not been borrowed.\n");
+                    }
+
                     isReturned = true;
-                    Console.WriteLine("You returned " + book.title + ".\n");
                     break;
-                } 
+                }
             }
 
             if (!isReturned)
             {
                 Console.WriteLine("The entered title is not available in the library.\n");
-                ReturnBook(books); 
             }
 
             Choices();
@@ -251,12 +258,12 @@ namespace LibraryManagementSystem
             Console.Write("Please enter the title or the author or the ISBN of the book you want to search for: ");
 
             string searched = Console.ReadLine();
-     
+
             bool isSearched = false;
 
             foreach (Book book in searchedInfo)
             {
-                if (book.title == searched  || book.author == searched || book.ISBN == searched)
+                if (book.title == searched || book.author == searched || book.ISBN == searched)
                 {
                     isSearched = true;
 
@@ -301,7 +308,7 @@ namespace LibraryManagementSystem
             {
                 if (book.overdue > 15)
                 {
-                    
+
                     Console.WriteLine($"Title: {book.title}");
                     Console.WriteLine($"Author: {book.author}");
                     Console.WriteLine($"ISBN: {book.ISBN}");
