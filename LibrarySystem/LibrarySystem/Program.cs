@@ -9,14 +9,6 @@ namespace LibraryManagementSystem
 
         static void Main()
         {
-            //1- kitap ekle isim ve yazar+numara ve kopya-
-            //2- kitap odunc al+
-            //3- kitap iade et+
-            //4- kitap ara+
-            //5- tum kitaplari goruntule
-            //6- tarihi gecmis kitaplari goruntule
-            //7- basa don
-
             Console.WriteLine("Welcome to Library!\n");
             Console.WriteLine("Please press '1' to add a book.");
             Console.WriteLine("'2' to borrow a book.");
@@ -24,6 +16,7 @@ namespace LibraryManagementSystem
             Console.WriteLine("'4' to search for a book by title or author.");
             Console.WriteLine("'5' to view all books.");
             Console.WriteLine("'6' to view overdue books.");
+            Console.WriteLine("To undo the operation, press the 'b' key.");
             Console.WriteLine("To go back to the beginning, press the 'q' key.\n");
 
             books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, 0,  false, false, false));
@@ -111,7 +104,6 @@ namespace LibraryManagementSystem
                 }
                 else
                 {
-
                     Console.WriteLine(title + " has been added to the library.\n");
                     return title;
                 }
@@ -207,15 +199,11 @@ namespace LibraryManagementSystem
             {
                 if (book.title == borrowed)
                 {
-                    
                     if (book.borrowed)
-                    {
                         Console.WriteLine("The entered book is already borrowed.\n");
-                    }
+                    
                     else
-                    {
                         Console.WriteLine("You borrowed " + book.title + ".");
-                    }
                     
                     isBorrowed = true;
                     break;
@@ -226,7 +214,6 @@ namespace LibraryManagementSystem
             {
                 Console.WriteLine("The entered book is not available.\n");
                 BorrowBook(books);
-                
             }
 
             Choices();
@@ -315,11 +302,12 @@ namespace LibraryManagementSystem
                 if (book.overdue > 15)
                 {
                     
-                    Console.WriteLine($"Title: {book.title} ");
-                    Console.WriteLine($"Author: {book.author} ");
-                    Console.WriteLine($"ISBN: {book.ISBN} ");
-                    Console.WriteLine($"Copy number: {book.copy} ");
-                    Console.WriteLine($"Is it borrowed?: {book.borrowed} \n");
+                    Console.WriteLine($"Title: {book.title}");
+                    Console.WriteLine($"Author: {book.author}");
+                    Console.WriteLine($"ISBN: {book.ISBN}");
+                    Console.WriteLine($"Copy number: {book.copy}");
+                    Console.WriteLine($"Is it borrowed?: {book.borrowed}");
+                    Console.WriteLine($"Overdue Day Date: {book.overdue}\n");
 
                     overdueBook.Add(book);
                 }
