@@ -26,8 +26,8 @@ namespace LibraryManagementSystem
             Console.WriteLine("'6' to view overdue books.");
             Console.WriteLine("To go back to the beginning, press the 'q' key.\n");
 
-            books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, false, false, false));
-            books.Add(new Book("Delifisek", "Vasconcelos", "978-605-2169-29-2", 2222, true, false, false));
+            books.Add(new Book("Donusum", "Franz Kafka", "978-605-2169-29-2", 1111, 0,  false, false, false));
+            books.Add(new Book("Delifisek", "Vasconcelos", "978-605-2169-29-2", 2222, 18, true, false, false));
 
             Choices();
 
@@ -38,6 +38,11 @@ namespace LibraryManagementSystem
         {
             Console.Write("What would you like to do?: ");
             string choice = Console.ReadLine();
+
+            if (choice == "q")
+            {
+                Console.Clear();
+            }
 
             if (int.TryParse(choice, out int choiceNumber))
             {
@@ -58,10 +63,13 @@ namespace LibraryManagementSystem
                     case 5:
                         ViewAllBooks(books);
                         break;
+                    case 6:
+                        ViewOverdueBooks();
+                    break;
                     default:
                         Console.WriteLine("Invalid choice. Please enter a valid number.\n");
                         Choices();
-                        break;
+                    break;
                 }
             }
             else
@@ -78,7 +86,8 @@ namespace LibraryManagementSystem
             string ISBN = BookISBN();
             int copy = BookCopy();
 
-            Book newBook = new Book(title, author, ISBN, copy, false, false, false);
+            int overdue = 0;
+            Book newBook = new Book(title, author, ISBN, copy, overdue, false, false, false);
             books.Add(newBook);
 
             Choices();
@@ -234,7 +243,7 @@ namespace LibraryManagementSystem
                 if (book.title == returned)
                 {
                     isReturned = true;
-                    Console.WriteLine("You returned " + book.title);
+                    Console.WriteLine("You returned " + book.title + ".\n");
                     break;
                 } 
             }
@@ -295,22 +304,48 @@ namespace LibraryManagementSystem
             Choices();
         }
 
+        public static void ViewOverdueBooks()
+        {
+            List<Book> overdueBook = new List<Book>();
+
+            foreach (var book in books)
+            {
+                if (book.overdue > 15)
+                {
+                    
+                    Console.WriteLine($"Title: {book.title} ");
+                    Console.WriteLine($"Author: {book.author} ");
+                    Console.WriteLine($"ISBN: {book.ISBN} ");
+                    Console.WriteLine($"Copy number: {book.copy} ");
+                    Console.WriteLine($"Is it borrowed?: {book.borrowed} \n");
+
+                    overdueBook.Add(book);
+                }
+            }
+
+            Console.WriteLine($"The number of the overdue books in the library is {overdueBook.Count} \n");
+
+            Choices();
+        }
+
         public class Book
         {
             public string title;
             public string author;
             public string ISBN;
             public int copy;
+            public int overdue;
             public bool borrowed;
             public bool returned;
             public bool searched;
 
-            public Book(string title, string author, string ISBN, int copy, bool borrowed, bool returned, bool searched)
+            public Book(string title, string author, string ISBN, int copy, int overdue, bool borrowed, bool returned, bool searched)
             {
                 this.title = title;
                 this.author = author;
                 this.ISBN = ISBN;
                 this.copy = copy;
+                this.overdue = overdue;
                 this.borrowed = borrowed;
                 this.returned = returned;
                 this.searched = searched;
