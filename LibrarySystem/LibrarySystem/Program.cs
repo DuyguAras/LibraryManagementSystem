@@ -42,6 +42,8 @@ namespace LibraryManagementSystem
             if (choice == "q")
             {
                 Console.Clear();
+                Main();
+                Choices();
             }
 
             if (int.TryParse(choice, out int choiceNumber))
